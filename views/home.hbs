@@ -1,0 +1,14 @@
+<h1>Welcome to the Furniture Shop</h1>
+
+<form action="/order" method="POST">
+    <ul>
+        {{#each products}}
+        <li>
+            {{product}} - ${{price}}
+        </li>
+        {{/each}}
+    </ul>
+    <label for="productQuantities">Enter quantities (comma-separated):</label>
+    <input type="text" name="productQuantities" id="productQuantities" required>
+    <button type="submit">Submit Order</button>
+</form>

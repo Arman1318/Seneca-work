@@ -7,9 +7,10 @@ const app = express();
 
 const port = 3000;
 
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 mongoose.connect("mongodb+srv://george_tsang:At00las%24@mongodbatlas-gua4x.mongodb.net/mongodatabase?retryWrites=true", {
 }).then(() => {
@@ -18,12 +19,17 @@ mongoose.connect("mongodb+srv://george_tsang:At00las%24@mongodbatlas-gua4x.mongo
     console.error('Connection error', err);
 });
 
-
-app.get("/", (req, res)=>{
-    res.send("Working");
+app.get("/", async (req, res) => {
+    try {
+        const products = await Shop.find();
+        console.log(products);
+        res.render('home', { products });
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).send('An error occurred while fetching products.');
+    }
 });
 
-
-app.listen(port, (req, res)=>{
+app.listen(port, (req, res) => {
     console.log("Listening")
 });
